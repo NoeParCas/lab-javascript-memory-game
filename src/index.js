@@ -28,6 +28,13 @@ const cards = [
 const memoryGame = new MemoryGame(cards);
 let hasFlippedCard = false;
 let firstCard, secondCard;
+let blockedBoard = false;
+let flipAudio = new Audio();
+flipAudio.src = "../sound/flipcard-91468.mp3"
+flipAudio.volume = 0.5;
+let isPairAudio = new Audio();
+isPairAudio.src = "../sound/decidemp3-14575.mp3"
+isPairAudio.volume = 0.5;
 
 window.addEventListener('load', (event) => {
   let html = '';
@@ -41,28 +48,34 @@ window.addEventListener('load', (event) => {
     `;
   });
 
-  // Add all the divs to the HTML
   document.querySelector('#memory-board').innerHTML = html;
   let pairsClickedScore = document.querySelector('#pairs-clicked')
   let pairsGuessedScore = document.querySelector('#pairs-guessed')
 
-  //functions
   function reset() {
-    console.log("reseteando por la siuda")
     hasFlippedCard = false;
+    blockedBoard = false;
     [firstCard, secondCard] = [null, null];
   }
 
   function unflipCards() {
+    blockedBoard = true;
+
     setTimeout(() => {
       firstCard.classList.remove('turned');
       secondCard.classList.remove('turned');
 
       reset();
-    }, 1500);
+    }, 1000);
   }
 
   function flipCard(card) {
+    if(blockedBoard) {
+      return 
+    }
+
+    flipAudio.play().then(() => {return true});
+
     card.classList.add('turned')
 
     if(!hasFlippedCard) {
@@ -72,13 +85,16 @@ window.addEventListener('load', (event) => {
     }
 
     secondCard = card;
+
     hasFlippedCard = false;
 
-    let boolean = memoryGame.checkIfPair(firstCard, secondCard);
+    let isPaired = memoryGame.checkIfPair(firstCard, secondCard);
+   
     pairsClickedScore.innerText = memoryGame.pairsClicked;
 
-    if (boolean) {
+    if (isPaired) {
       pairsGuessedScore.innerText = memoryGame.pairsGuessed;
+      isPairAudio.play().then(() => {return true})
       firstCard.removeEventListener("click", flipCard);
       secondCard.removeEventListener("click", flipCard);
       memoryGame.checkIfFinished() && reset();
@@ -87,8 +103,6 @@ window.addEventListener('load', (event) => {
     }
   }
 
-  
-  // Bind the click event of each element to a function
   document.querySelectorAll('.card').forEach((card) => {
     card.addEventListener('click', () => {
       flipCard(card);
@@ -96,5 +110,4 @@ window.addEventListener('load', (event) => {
       console.log(`Card clicked: ${card}`);
     });
   });
-
 });

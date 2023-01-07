@@ -45,19 +45,14 @@ class MemoryGame {
 
     const clonedPickedCards = [...this.pickedCards];
     const slicedPickedCards = clonedPickedCards.slice(4,12)
-    console.log(slicedPickedCards, "slice!!")
-    const splicedPickedCards = clonedPickedCards.splice(4,8)
-    console.log(splicedPickedCards, "splice!!")
+    clonedPickedCards.splice(4,8)
     clonedPickedCards.unshift(...slicedPickedCards);
-    console.log(clonedPickedCards, "unshift!!")
  
     this.pickedCards.push(...clonedPickedCards);
-    console.log(this.pickedCards, "pickedCards");
     
     return this.pickedCards;
   }
   
-
   checkIfPair(card1, card2) {
     this.pairsClicked += 1;
     
