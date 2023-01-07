@@ -30,10 +30,10 @@ let hasFlippedCard = false;
 let firstCard, secondCard;
 let blockedBoard = false;
 let flipAudio = new Audio();
-flipAudio.src = "../sound/flipcard-91468.mp3"
+flipAudio.src = "../audio/flipcard.mp3"
 flipAudio.volume = 0.5;
 let isPairAudio = new Audio();
-isPairAudio.src = "../sound/decidemp3-14575.mp3"
+isPairAudio.src = "../audio/matched.mp3"
 isPairAudio.volume = 0.5;
 
 window.addEventListener('load', (event) => {
